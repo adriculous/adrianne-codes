@@ -1,0 +1,82 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+---
+
+<Layout>
+  <div class="site-shell">
+    <aside class="site-sidebar">
+      <Nav />
+    </aside>
+
+    <main class="site-main">
+      <section class="projects-page content-shell content-shell--beige">
+        <p class="eyebrow">Projects</p>
+        <h1>All Projects</h1>
+
+        <p class="page-intro">
+          A collection of projects I’ve built and documented — including
+          frontend work, experiments, and portfolio builds.
+        </p>
+
+        <div class="project-grid">
+          <ProjectCard
+            title="Adrianne Codes"
+            description="A rebuilt portfolio using Astro, PicoCSS, and custom CSS."
+            href="/projects/adrianne-codes"
+            tone="blue"
+          />
+
+          <ProjectCard
+            title="Portal by Adrianne"
+            description="A multi-site portfolio hub connecting all my work."
+            href="/projects/portal-by-adrianne"
+            tone="green"
+          />
+
+          <ProjectCard
+            title="Patterned by Adrianne"
+            description="A data portfolio using Hugo and TailwindCSS."
+            href="/projects/patterned-by-adrianne"
+            tone="lavender"
+          />
+
+          <ProjectCard
+            title="Prompted by Adrianne"
+            description="A site exploring prompt workflows and AI tools."
+            href="/projects/prompted-by-adrianne"
+            tone="pink"
+          />
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+.projects-page {
+  width: 100%;
+}
+
+.page-intro {
+  margin: 0 0 1.25rem;
+  color: var(--slate);
+  line-height: 1.7;
+}
+
+.project-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 700px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

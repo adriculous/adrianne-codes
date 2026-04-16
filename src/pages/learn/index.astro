@@ -1,0 +1,59 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import TutCatCard from "../../components/TutCatCard.astro";
+---
+
+<Layout title="Learn | Adrianne Codes">
+  <div class="site-shell">
+    <aside class="site-sidebar">
+      <Nav />
+    </aside>
+
+    <main class="site-main">
+      <section class="page-header content-shell content-shell--white content-shell--reading">
+        <p class="eyebrow">Learn</p>
+        <h1>Notes, experiments, and learning in public</h1>
+        <p class="page-intro">
+          This is where I keep track of what I’m learning — from frontend experiments and AI tools
+          to workflow notes, study takeaways, and things I’m figuring out as I go.
+        </p>
+      </section>
+
+      <section class="learn-empty content-shell content-shell--white content-shell--reading">
+        <h2>Coming Soon</h2>
+        <p>
+          I’m currently organizing my learning notes and experiments. This section will soon include
+          in-progress ideas, experiments, and things I’m figuring out as I build.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+  .page-header {
+    width: 100%;
+  }
+
+  .page-intro {
+    margin: 0;
+    max-width: 58ch;
+    color: var(--slate);
+    font-size: 1.02rem;
+    line-height: 1.75;
+  }
+
+  .learn-empty {
+    width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .learn-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

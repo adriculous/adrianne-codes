@@ -1,0 +1,150 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Nav from "../../components/Nav.astro";
+import TutCatCard from "../../components/TutCatCard.astro";
+import Footer from "../../components/Footer.astro";
+---
+
+<Layout title="Tuts | Adrianne Codes">
+  <div class="site-shell">
+    <aside class="site-sidebar">
+      <Nav />
+    </aside>
+
+    <main class="site-main">
+      <section class="page-header content-shell content-shell--white content-shell--reading">
+        <p class="eyebrow">Tuts</p>
+        <h1>Tutorials &amp; Guides</h1>
+        <p class="page-intro">
+          Step-by-step guides, coding notes, and technical write-ups where I explain how I build
+          things and what I learn along the way.
+        </p>
+      </section>
+
+      <section class="tutorial-list" aria-label="Tutorial categories">
+
+        <TutCatCard
+          title="🧱 SSGs"
+          description="Astro, Hugo, and static site workflows."
+          href="/tuts/ssgs"
+          tone="blue"
+        />
+
+        <TutCatCard
+          title="🎨 Modern CSS"
+          description="Layouts, utility frameworks, and component styling."
+          href="/tuts/modern-css"
+          tone="lavender"
+        />
+
+        <TutCatCard
+          title="🧩 WordPress"
+          description="Themes, plugins, and CMS workflows."
+          href="/tuts/wordpress"
+          tone="green"
+        />
+
+        <TutCatCard
+          title="🐍 Python"
+          description="Scripts, data work, and experiments."
+          href="/tuts/python"
+          tone="yellow"
+        />
+
+        <TutCatCard
+          title="🛠 Daily Tools"
+          description="Git, Markdown, dev setup, and everyday workflows."
+          href="/tuts/daily-tools"
+          tone="pink"
+        />
+
+        <TutCatCard
+          title="🗂 Archive"
+          description="Early tutorials from my old NINPOJineous site, preserved as originally written — a snapshot of where my technical writing started."
+          href="/tuts/archive"
+          tone="archive"
+        />
+      </section>
+    </main>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+  .page-header {
+    width: 100%;
+  }
+
+  .page-intro {
+    margin: 0;
+    max-width: 56ch;
+    color: var(--slate);
+    font-size: 1.02rem;
+    line-height: 1.75;
+  }
+
+  .tutorial-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  /* Make Archive span full width */
+  .tutorial-list :global(a.tutcat-archive) {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 900px) {
+    .tutorial-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .tutorial-card {
+    width: 100%;
+  }
+
+  .tutorial-status {
+    margin: 0 0 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #c93f3f;
+  }
+
+  .tutorial-card h2 {
+    margin-top: 0;
+    margin-bottom: 0.65rem;
+  }
+
+  .tutorial-card p:not(.tutorial-status) {
+    margin: 0;
+    color: var(--slate);
+    line-height: 1.7;
+  }
+
+  .tutorial-card--archive {
+    background: #fff8f2;
+    border: 2px solid #f4b183;
+  }
+
+  .tutorial-card--archive .tutorial-status {
+    color: #d2691e;
+  }
+
+  .tutorial-link,
+  .tutorial-link:visited,
+  .tutorial-link:hover,
+  .tutorial-link:active {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .tutorial-link *,
+  .tutorial-link:visited * {
+    text-decoration: none !important;
+  }
+</style>

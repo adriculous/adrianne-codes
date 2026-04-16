@@ -1,0 +1,82 @@
+---
+const { title, description, href, tone = "default" } = Astro.props;
+---
+
+<a href={href} class={`tutcat-link tutcat-${tone}`}>
+  <article class="tutcat-card content-shell">
+    <h2>{title}</h2>
+    <p>{description}</p>
+  </article>
+</a>
+
+<style>
+  .tutcat-link,
+  .tutcat-link:visited,
+  .tutcat-link:hover,
+  .tutcat-link:active {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .tutcat-link * {
+    text-decoration: none !important;
+  }
+
+  .tutcat-card {
+    padding: 1.3rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(120,140,180,0.12);
+    box-shadow: 0 12px 24px rgba(80,100,140,0.06);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .tutcat-card h2 {
+    margin: 0 0 0.6rem 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+  }
+
+  .tutcat-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--slate);
+  }
+
+  .tutcat-link:hover .tutcat-card {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 30px rgba(80,100,140,0.14);
+  }
+
+  /* 🎨 TONES */
+
+  .tutcat-default .tutcat-card {
+    background: rgba(255,255,255,0.65);
+  }
+
+  .tutcat-archive .tutcat-card {
+    background: #fff8f2;
+    border: 2px solid #f4b183;
+  }
+
+  .tutcat-blue .tutcat-card {
+    background: linear-gradient(135deg, rgba(190,210,255,0.85), rgba(160,185,240,0.85));
+  }
+
+  .tutcat-lavender .tutcat-card {
+    background: linear-gradient(135deg, rgba(220,205,255,0.85), rgba(190,170,240,0.85));
+  }
+
+  .tutcat-green .tutcat-card {
+    background: linear-gradient(135deg, rgba(205,235,220,0.85), rgba(170,215,195,0.85));
+  }
+
+  .tutcat-yellow .tutcat-card {
+    background: linear-gradient(135deg, rgba(255,240,200,0.9), rgba(255,220,150,0.9));
+  }
+
+  .tutcat-pink .tutcat-card {
+    background: linear-gradient(135deg, rgba(255,220,235,0.9), rgba(255,190,215,0.9));
+  }
+</style>

@@ -1,0 +1,172 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  status?: string;
+  stack?: string[];
+  linkLabel?: string;
+  soft?: boolean;
+  tone?: 'default' | 'blue' | 'lavender' | 'pink' | 'green' | 'peach';
+}
+
+const {
+  title,
+  description,
+  href,
+  status,
+  stack = [],
+  linkLabel = "Read Case Study →",
+  soft = false,
+  tone = 'default'
+} = Astro.props;
+---
+
+<article class:list={['project-card', `project-card--${tone}`, { 'project-card--soft': soft }]}>
+  {status && <p class="project-status">{status}</p>}
+
+  <h3>{title}</h3>
+  <p>{description}</p>
+
+  {stack.length > 0 && (
+    <ul class="stack-list" aria-label={`${title} tech stack`}>
+      {stack.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  )}
+
+  {linkLabel && (
+    <a href={href} class="text-link">{linkLabel}</a>
+  )}
+</article>
+
+<style>
+  .project-card {
+    padding: 1.2rem 1.15rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(120, 140, 180, 0.12);
+    box-shadow: 0 12px 24px rgba(80, 100, 140, 0.06);
+    backdrop-filter: blur(3px);
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      border-color 0.18s ease;
+  }
+
+  .project-card--default {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(248, 245, 240, 0.96)
+    );
+    border: 1px solid rgba(180, 160, 130, 0.25);
+  }
+
+  .project-card--blue {
+    background: linear-gradient(
+      135deg,
+      rgba(240, 245, 255, 0.94),
+      rgba(226, 235, 255, 0.94)
+    );
+    border-top: 3px solid rgba(120, 160, 255, 0.6);
+  }
+
+  .project-card--lavender {
+    background: linear-gradient(
+      135deg,
+      rgba(252, 249, 255, 0.94),
+      rgba(242, 236, 252, 0.94)
+    );
+    border-top: 3px solid rgba(180, 150, 255, 0.6);
+  }
+
+  .project-card--pink {
+    background: linear-gradient(
+      135deg,
+      rgba(248, 242, 252, 0.94),
+      rgba(236, 226, 245, 0.94)
+    );
+    border-top: 3px solid rgba(240, 160, 200, 0.6);
+  }
+
+  .project-card--green {
+    background: linear-gradient(
+      135deg,
+      rgba(228, 245, 235, 0.96),
+      rgba(205, 228, 215, 0.96)
+    );
+    border-top: 3px solid rgba(120, 175, 145, 0.75);
+  }
+
+  .project-card--peach {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 235, 225, 0.95),
+      rgba(255, 210, 190, 0.95)
+    );
+    border-top: 3px solid rgba(255, 150, 120, 0.8);
+  }
+
+  .project-card--soft {
+    background: linear-gradient(
+      135deg,
+      rgba(248, 242, 252, 0.94),
+      rgba(236, 226, 245, 0.94)
+    );
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 18px 30px rgba(80, 100, 140, 0.14);
+    border-color: rgba(120, 140, 180, 0.25);
+  }
+
+  .project-card h3 {
+    margin: 0 0 0.65rem 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--midnight);
+  }
+
+  .project-card p {
+    margin: 0;
+    color: rgba(40, 55, 85, 0.9);
+    font-size: 0.98rem;
+    line-height: 1.65;
+  }
+
+  .project-status {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-strong);
+  }
+
+  .stack-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+  }
+
+  .stack-list li {
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4f5d87;
+  }
+
+  .text-link {
+    display: inline-block;
+    margin-top: 0.85rem;
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--accent-strong);
+  }
+</style>

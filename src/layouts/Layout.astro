@@ -1,23 +1,206 @@
+---
+import "@picocss/pico/css/pico.classless.min.css";
+import "../styles/layout.css";
+import Nav from "../components/Nav.astro";
+
+const { title = "Adrianne Codes" } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Sora:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+
+  <body>
+    <slot />
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  :global(:root) {
+    --ink: #0c1a2f;
+    --midnight: #122139;
+    --slate: #354766;
+    --mist: #f4f7ff;
+    --cloud: #e4efff;
+    --petal: #ffdceb;
+    --accent: #97b6ff;
+    --accent-strong: #5a7fe0;
+    --shell: rgba(255, 255, 255, 0.85);
+    --shell-white: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(248, 250, 255, 0.96)
+    );
+    --shell-beige: linear-gradient(
+      135deg,
+      rgba(255, 250, 240, 0.96),
+      rgba(245, 235, 220, 0.96)
+    );
+    --shell-blue: linear-gradient(
+      135deg,
+      rgba(240, 246, 255, 0.96),
+      rgba(226, 236, 255, 0.96)
+    );
+    --shell-lavender: linear-gradient(
+      135deg,
+      rgba(250, 245, 255, 0.96),
+      rgba(240, 232, 250, 0.96)
+    );
+    --shell-green: linear-gradient(
+      135deg,
+      rgba(244, 251, 246, 0.96),
+      rgba(228, 242, 232, 0.96)
+    );
+    --shell-pink: linear-gradient(
+      135deg,
+      rgba(255, 245, 249, 0.96),
+      rgba(246, 230, 239, 0.96)
+    );
+    --sidebar-bg: linear-gradient(
+      180deg,
+      rgba(190, 206, 242, 0.998) 0%,
+      rgba(214, 196, 236, 0.998) 100%
+    );
+
+    --card-radius: 30px;
+    --card-shadow: 0 28px 60px rgba(45, 72, 126, 0.15);
+    --border-soft: 1px solid rgba(90, 127, 224, 0.12);
+
+    --space-xs: 0.5rem;
+    --space-sm: 0.875rem;
+    --space-md: 1.25rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+
+    --content-width: 1000px;
+    --reading-width: 65ch;
+
+  }
+
+  :global(*),
+  :global(*::before),
+  :global(*::after) {
+    box-sizing: border-box;
+  }
+
+  :global(body) {
+    font-family: "Sora", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top right, rgba(255, 222, 233, 0.4), transparent 45%),
+      radial-gradient(circle at 20% 0%, rgba(151, 182, 255, 0.25), transparent 55%),
+      linear-gradient(180deg, #f9fbff 0%, #fff 65%, #f6f9ff 100%);
+    color: var(--ink);
+  }
+
+  :global(body)::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("/patterns/old_mathematics.png");
+    background-repeat: repeat;
+    background-size: 420px auto;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  :global(main),
+  :global(.site-shell) {
+    position: relative;
+    z-index: 1;
+  }
+
+  :global(.content-shell) {
+    border-radius: 2rem;
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    box-shadow: 0 16px 40px rgba(90, 107, 163, 0.12);
+    border: 1px solid rgba(120, 140, 180, 0.16);
+    background: var(--shell-white);
+  }
+
+  :global(.content-shell--white) {
+    background: var(--shell-white);
+  }
+
+  :global(.content-shell--beige) {
+    background: var(--shell-beige);
+    border-color: rgba(200, 180, 150, 0.22);
+  }
+
+  :global(.content-shell--blue) {
+    background: var(--shell-blue);
+  }
+
+  :global(.content-shell--lavender) {
+    background: var(--shell-lavender);
+  }
+
+  :global(.content-shell--green) {
+    background: var(--shell-green);
+  }
+
+  :global(.content-shell--pink) {
+    background: var(--shell-pink);
+  }
+
+  :global(.content-shell--reading) {
+    max-width: var(--reading-width);
+  }
+
+  :global(.eyebrow) {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+
+:global(h1) {
+  margin: 0 0 1rem;
+  font-size: 2.4rem;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-family: "Fraunces", Georgia, serif;
+  color: var(--ink);
+}
+
+:global(h2) {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.45rem;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-family: "Fraunces", Georgia, serif;
+  color: var(--midnight);
+}
+
+:global(h3) {
+  margin-top: 1.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  font-weight: 600;
+  font-family: "Fraunces", Georgia, serif;
+  color: var(--midnight);
+}
+
 </style>

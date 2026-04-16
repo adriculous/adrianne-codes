@@ -1,0 +1,139 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout>
+  <div class="site-shell">
+    <aside class="site-sidebar">
+      <Nav />
+    </aside>
+
+    <main class="site-main">
+      <section class="colophon content-shell content-shell--beige content-shell--reading">
+        <p class="eyebrow">Colophon</p>
+        <h1>How this site is built</h1>
+
+        <p>
+          <strong>Adrianne Codes</strong> is my coding and technical writing
+          portfolio, built to document both my work and what I learn along the way.
+        </p>
+
+        <h2>🧰 Tech Stack</h2>
+        <ul>
+          <li><strong>Astro</strong> — static site framework</li>
+          <li><strong>PicoCSS</strong> — lightweight base styling</li>
+          <li><strong>Custom CSS</strong> — layout, components, and design system</li>
+          <li><strong>Iconify</strong> - social media icons</li>
+          <li><strong>Hashnode API</strong> - headless CMS</li>
+        </ul>
+
+        <h2>🎨 Design</h2>
+        <p>
+          This site uses a soft, pastel-inspired design system with rounded cards,
+          gradients, and a focus on readability. Layouts are component-based and
+          built for clarity and reuse.
+        </p>
+
+        <h2>🧠 Philosophy</h2>
+        <p>
+          I build in public and document what I learn. This site is both a portfolio
+          and a learning space — where projects, tutorials, and notes evolve over time.
+        </p>
+
+        <h2>🔗 Related Sites</h2>
+        <ul>
+          <li><a href="https://adrianne.io">Portal by Adrianne</a></li>
+          <li><a href="https://data.adrianne.io">Patterned by Adrianne</a></li>
+          <li><a href="https://ai.adrianne.io">Prompted by Adrianne</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+  .site-shell {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 1.25rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.25rem;
+    align-items: start;
+  }
+
+  .site-sidebar {
+    position: sticky;
+    top: 1rem;
+  }
+
+  .site-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .colophon {
+    width: 100%;
+  }
+
+  .colophon h1 {
+    margin: 0 0 1rem;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.08;
+    color: var(--midnight);
+  }
+
+  .colophon h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 1.45rem;
+    line-height: 1.15;
+    color: var(--midnight);
+  }
+
+  .colophon p:not(.eyebrow),
+  .colophon li {
+    color: var(--slate);
+    line-height: 1.75;
+    font-size: 1rem;
+  }
+
+  .colophon p {
+    margin: 0 0 1rem;
+  }
+
+  .colophon ul {
+    padding-left: 1.2rem;
+    margin: 0;
+  }
+
+  .colophon li + li {
+    margin-top: 0.35rem;
+  }
+
+  .colophon a {
+    color: var(--accent-strong);
+    text-decoration: none;
+  }
+
+  .colophon a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    .site-shell {
+      grid-template-columns: 1fr;
+    }
+
+    .site-sidebar {
+      position: static;
+    }
+  }
+</style>
