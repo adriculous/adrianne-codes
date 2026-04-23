@@ -2,7 +2,14 @@
 import Layout from "../../layouts/Layout.astro";
 import Nav from "../../components/Nav.astro";
 import Footer from "../../components/Footer.astro";
-import TutCatCard from "../../components/TutCatCard.astro";
+import { getAllPosts } from "../../lib/client";
+
+const data = await getAllPosts();
+const allPosts = data.publication.posts.edges;
+
+const learnPosts = allPosts.filter(({ node }) =>
+  node.tags.some((tag) => tag.name.toLowerCase() === "learn")
+);
 ---
 
 <Layout title="Learn | Adrianne Codes">
@@ -21,12 +28,23 @@ import TutCatCard from "../../components/TutCatCard.astro";
         </p>
       </section>
 
-      <section class="learn-empty content-shell content-shell--white content-shell--reading">
-        <h2>Coming Soon</h2>
-        <p>
-          I’m currently organizing my learning notes and experiments. This section will soon include
-          in-progress ideas, experiments, and things I’m figuring out as I build.
-        </p>
+      <section class="learn-list content-shell content-shell--white content-shell--reading">
+        <h2>Latest Notes</h2>
+        {
+          learnPosts.length > 0 ? (
+            <ul>
+              {learnPosts.map(({ node }) => (
+                <li>
+                  <a href={`https://acastro.hashnode.dev/${node.slug}`} target="_blank" rel="noopener noreferrer">
+                    {node.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No learning notes published yet.</p>
+          )
+        }
       </section>
     </main>
   </div>
@@ -55,5 +73,11 @@ import TutCatCard from "../../components/TutCatCard.astro";
     .learn-list {
       grid-template-columns: 1fr;
     }
+  }
+
+  .learn-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 </style>

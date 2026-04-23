@@ -2,8 +2,13 @@
 import "@picocss/pico/css/pico.classless.min.css";
 import "../styles/layout.css";
 import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
 
-const { title = "Adrianne Codes" } = Astro.props;
+const { title = "Adrianne Codes", frontmatter } = Astro.props;
+const isMarkdownPage = !!frontmatter;
+const pageTitle = frontmatter?.title
+  ? `${frontmatter.title} | Adrianne Codes`
+  : title;
 ---
 
 <!doctype html>
@@ -20,11 +25,29 @@ const { title = "Adrianne Codes" } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Sora:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <title>{title}</title>
+    <title>{pageTitle}</title>
   </head>
 
   <body>
-    <slot />
+    {isMarkdownPage ? (
+      <>
+        <div class="site-shell">
+          <aside class="site-sidebar">
+            <Nav />
+          </aside>
+
+          <main class="site-main">
+            <article class="content-shell content-shell--white content-shell--reading markdown-page">
+              <slot />
+            </article>
+          </main>
+        </div>
+
+        <Footer />
+      </>
+    ) : (
+      <slot />
+    )}
   </body>
 </html>
 
@@ -160,6 +183,9 @@ const { title = "Adrianne Codes" } = Astro.props;
 
   :global(.content-shell--reading) {
     max-width: var(--reading-width);
+  }
+  :global(.markdown-page) {
+    width: 100%;
   }
 
   :global(.eyebrow) {

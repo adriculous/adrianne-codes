@@ -3,6 +3,87 @@ import Layout from "../../layouts/Layout.astro";
 import Nav from "../../components/Nav.astro";
 import TutCatCard from "../../components/TutCatCard.astro";
 import Footer from "../../components/Footer.astro";
+import { getAllPosts } from "../../lib/client";
+
+const data = await getAllPosts();
+const allPosts = data.publication.posts.edges;
+
+const tutorials = allPosts.filter(({ node }) =>
+  node.tags.some((tag) => tag.name.toLowerCase() === "tutorial")
+);
+
+const latestTutorials = tutorials.slice(0, 5);
+
+type TutorialNode = (typeof allPosts)[number]["node"];
+
+type TutorialCategory = {
+  id: string;
+  title: string;
+  description: string;
+  tone: string;
+  tags: string[];
+};
+
+const tutorialCategories: TutorialCategory[] = [
+  {
+    id: "ssgs",
+    title: "🧱 SSGs",
+    description: "Astro, Hugo, and static site workflows.",
+    tone: "blue",
+    tags: ["astro", "hugo", "ssg", "static-site-generator", "static-sites"],
+  },
+  {
+    id: "modern-css",
+    title: "🎨 Modern CSS",
+    description: "Layouts, utility frameworks, and component styling.",
+    tone: "lavender",
+    tags: ["css", "tailwind", "tailwindcss", "modern-css", "layout"],
+  },
+  {
+    id: "wordpress",
+    title: "🧩 WordPress",
+    description: "Themes, plugins, and CMS workflows.",
+    tone: "green",
+    tags: ["wordpress", "cms", "plugin", "plugins", "theme", "themes"],
+  },
+  {
+    id: "python",
+    title: "🐍 Python",
+    description: "Scripts, data work, and experiments.",
+    tone: "yellow",
+    tags: ["python", "pandas", "jupyter", "data"],
+  },
+  {
+    id: "daily-tools",
+    title: "🛠 Daily Tools",
+    description: "Git, Markdown, dev setup, and everyday workflows.",
+    tone: "pink",
+    tags: ["git", "github", "markdown", "workflow", "tools", "daily-tools"],
+  },
+  {
+    id: "archive",
+    title: "🗂 Archive",
+    description: "Early tutorials from my old NINPOJineous site, preserved as originally written — a snapshot of where my technical writing started.",
+    tone: "archive",
+    tags: ["archive", "legacy", "ninpojineous", "old-site"],
+  },
+];
+
+const matchesCategory = (node: TutorialNode, categoryTags: string[]) =>
+  node.tags.some((tag) => {
+    const name = tag.name.toLowerCase();
+    const slug = tag.slug.toLowerCase();
+    return categoryTags.includes(name) || categoryTags.includes(slug);
+  });
+
+const tutorialsByCategory = tutorialCategories.map((category) => ({
+  ...category,
+  posts: tutorials.filter(({ node }) => matchesCategory(node, category.tags)),
+}));
+
+const uncategorizedTutorials = tutorials.filter(({ node }) =>
+  !tutorialCategories.some((category) => matchesCategory(node, category.tags))
+);
 ---
 
 <Layout title="Tuts | Adrianne Codes">
@@ -15,9 +96,11 @@ import Footer from "../../components/Footer.astro";
       <section class="page-header content-shell content-shell--white content-shell--reading">
         <p class="eyebrow">Tuts</p>
         <h1>Tutorials &amp; Guides</h1>
+        <p class="coming-soon">
+          <em>Coming soon — still cooking 🍳</em>
+        </p>
         <p class="page-intro">
-          Step-by-step guides, coding notes, and technical write-ups where I explain how I build
-          things and what I learn along the way.
+          This section is currently in progress. I'm building out tutorials, notes, and learning resources based on real projects and workflows. Topics will include frontend development, data workflows, and everyday dev tools.
         </p>
       </section>
 
@@ -26,44 +109,109 @@ import Footer from "../../components/Footer.astro";
         <TutCatCard
           title="🧱 SSGs"
           description="Astro, Hugo, and static site workflows."
-          href="/tuts/ssgs"
+          href="#ssgs"
           tone="blue"
         />
 
         <TutCatCard
           title="🎨 Modern CSS"
           description="Layouts, utility frameworks, and component styling."
-          href="/tuts/modern-css"
+          href="#modern-css"
           tone="lavender"
         />
 
         <TutCatCard
           title="🧩 WordPress"
           description="Themes, plugins, and CMS workflows."
-          href="/tuts/wordpress"
+          href="#wordpress"
           tone="green"
         />
 
         <TutCatCard
           title="🐍 Python"
           description="Scripts, data work, and experiments."
-          href="/tuts/python"
+          href="#python"
           tone="yellow"
         />
 
         <TutCatCard
           title="🛠 Daily Tools"
           description="Git, Markdown, dev setup, and everyday workflows."
-          href="/tuts/daily-tools"
+          href="#daily-tools"
           tone="pink"
         />
 
         <TutCatCard
           title="🗂 Archive"
           description="Early tutorials from my old NINPOJineous site, preserved as originally written — a snapshot of where my technical writing started."
-          href="/tuts/archive"
+          href="#archive"
           tone="archive"
         />
+      </section>
+
+      <section class="tutorial-posts content-shell content-shell--white content-shell--reading">
+        <h2>Latest Tutorials</h2>
+        {
+          latestTutorials.length > 0 ? (
+            <ul class="tutorial-post-list">
+              {latestTutorials.map(({ node }) => (
+                <li>
+                  <a href={`/post/${node.slug}`}>
+                    {node.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="page-intro">No tutorial posts published yet.</p>
+          )
+        }
+      </section>
+
+      <section class="tutorial-groups">
+        {
+          tutorialsByCategory.map((category) => (
+            <section id={category.id} class={`tutorial-group-block tutorial-group--${category.tone} content-shell content-shell--white content-shell--reading`}>
+              <h3>{category.title}</h3>
+              <p class="tutorial-group-description">{category.description}</p>
+              {
+                category.posts.length > 0 ? (
+                  <ul class="tutorial-post-list">
+                    {category.posts.map(({ node }) => (
+                      <li>
+                        <a href={`/post/${node.slug}`}>
+                          {node.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p class="tutorial-empty-note">No posts in this category yet.</p>
+                )
+              }
+            </section>
+          ))
+        }
+
+        {
+          uncategorizedTutorials.length > 0 && (
+            <section id="uncategorized" class="tutorial-group-block tutorial-group--neutral content-shell content-shell--white content-shell--reading">
+              <h3>✨ More Tutorials</h3>
+              <p class="tutorial-group-description">
+                These posts are published but do not yet match one of the main category tags above.
+              </p>
+              <ul class="tutorial-post-list">
+                {uncategorizedTutorials.map(({ node }) => (
+                  <li>
+                    <a href={`/post/${node.slug}`}>
+                      {node.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
       </section>
     </main>
   </div>
@@ -90,7 +238,6 @@ import Footer from "../../components/Footer.astro";
     gap: 1rem;
   }
 
-  /* Make Archive span full width */
   .tutorial-list :global(a.tutcat-archive) {
     grid-column: 1 / -1;
   }
@@ -146,5 +293,90 @@ import Footer from "../../components/Footer.astro";
   .tutorial-link *,
   .tutorial-link:visited * {
     text-decoration: none !important;
+  }
+
+  .tutorial-posts {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .tutorial-posts h2 {
+    margin-top: 0;
+  }
+
+  .tutorial-groups {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .tutorial-group-block + .tutorial-group-block {
+    margin-top: 0;
+  }
+
+  .tutorial-group-block {
+    scroll-margin-top: 2rem;
+    border-top: 6px solid transparent;
+  }
+
+  .tutorial-group--blue {
+    border-top-color: #7aa2f7;
+  }
+
+  .tutorial-group--lavender {
+    border-top-color: #c4b5fd;
+  }
+
+  .tutorial-group--green {
+    border-top-color: #86efac;
+  }
+
+  .tutorial-group--yellow {
+    border-top-color: #fde68a;
+  }
+
+  .tutorial-group--pink {
+    border-top-color: #f9a8d4;
+  }
+
+  .tutorial-group--archive {
+    border-top-color: #f4b183;
+  }
+
+  .tutorial-group--neutral {
+    border-top-color: rgba(0, 0, 0, 0.15);
+  }
+
+  .tutorial-group-block h3 {
+    margin-bottom: 0.35rem;
+  }
+
+  .tutorial-group-description {
+    margin: 0 0 0.85rem;
+    color: var(--slate);
+    line-height: 1.65;
+  }
+
+  .tutorial-empty-note {
+    margin: 0;
+    color: var(--slate);
+    font-style: italic;
+  }
+
+  .tutorial-post-list {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .tutorial-post-list li + li {
+    margin-top: 0.5rem;
+  }
+
+  .coming-soon {
+    margin: 0.5rem 0 0.75rem;
+    font-size: 1rem;
+    color: var(--accent-strong);
   }
 </style>
