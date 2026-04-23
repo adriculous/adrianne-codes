@@ -8,6 +8,8 @@
 
 ---
 
+🌐 **Live Site:** https://adrianne.codes
+
 ## ✨ Overview
 
 **Adrianne Codes** is my personal coding and technical writing portfolio built with Astro.
