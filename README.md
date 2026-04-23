@@ -1,78 +1,80 @@
-# Adrianne Codes
+# 🌸 Adrianne Codes
 
-A coding and technical writing portfolio built with Astro.
+![Astro](https://img.shields.io/badge/Astro-FF5D01?style=for-the-badge&logo=astro&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
+![Hashnode](https://img.shields.io/badge/Hashnode-2962FF?style=for-the-badge&logo=hashnode&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-This site is part of my broader web ecosystem and focuses on:
-- project case studies 
-- tutorials 
-- learning notes 
-- workflow documentation 
+---
 
-## Tech Stack
+## ✨ Overview
+
+**Adrianne Codes** is my personal coding and technical writing portfolio built with Astro.
+
+This site is designed as a living platform where:
+- 📂 case studies document my builds
+- ✍️ tutorials and notes evolve over time
+- 🌱 I learn in public as I grow my skills
+
+---
+
+## 🧠 Key Features
+
+- ⚡ Built with **Astro**
+- 📝 Hybrid content system:
+  - Local Markdown for case studies
+  - Hashnode CMS for tutorials and notes
+- 🔍 Tag-based filtering for tutorials
+- 🧩 Dynamic routing with `/post/[slug]`
+
+---
+
+## 🏗️ Tech Stack
 
 - Astro
-- Pico CSS
-- Custom CSS
-- Iconify
-- Hashnode API (planned)
-- Vercel (planned deployment)
+- TypeScript
+- GraphQL
+- Hashnode (Headless CMS)
+- Pico CSS + Modern CSS
 
-## Project Status
+---
 
-Currently in active rebuild.
-
-Recent work includes:
-- rebuilding the site structure in Astro
-- creating reusable components
-- drafting the first project case study
-- setting up the GitHub repository
-
-## Sections
-
-- **Projects** — case studies and documented builds
-- **Tuts** — tutorials and archived write-ups
-- **Learn** — notes and progress while learning new tools and workflows
-- **About** — background and focus
-- **Credentials** — certifications and related learning
-- **Contact** — ways to reach me
-
-## Goals
-
-- Keep the site lightweight and readable
-- Build a reusable design system
-- Document projects and learning in a structured way
-- Create a maintainable workflow for future content
-
-## Development
-
-Install dependencies:
+## 🚀 Project Structure
 
 ```bash
-npm install
+src/
+  components/
+  layouts/
+  pages/
+  lib/
 ```
 
-Run locally:
+---
 
-```bash
-npm run dev
-```
+## 💡 What I Learned
 
-Build for production:
+* How to integrate a headless CMS using GraphQL
+* Dynamic routing in Astro
+* Designing a hybrid content workflow
+* Structuring a portfolio for both projects and writing
 
-```bash
-npm run build
-```
+---
 
-Preview build:
+## 📌 Status
 
-```bash
-npm run preview
-```
+🚧 Initial build complete
+🚀 Preparing for deployment
 
-## Notes
+---
 
-This project is evolving over time. Some content is currently being drafted manually in Markdown and will be expanded as the site grows.
+## 📖 Changelog
 
-## License
+👉 https://github.com/adriculous/adrianne-codes/blob/main/CHANGELOG.md
 
-No license specified at this time.
+---
+
+💖 Author
+
+Adrianne Padua
+✨ Builder, learner, and future Ethical Prompt Engineer
