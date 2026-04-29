@@ -4,6 +4,13 @@ All notable changes to this project will be documented here.
 
 ---
 
+## 2026-04-28: New Learn Notes About CSS Specificity
+
+### Added
+- Added new **Learn** notes: *Why Your CSS Isn't Working: A Friendly Guide to Specificity*
+
+---
+
 ## 2026-04-22: Hashnode Integration & Content System Update
 
 ### Added
