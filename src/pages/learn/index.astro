@@ -35,7 +35,7 @@ const learnPosts = allPosts.filter(({ node }) =>
             <ul>
               {learnPosts.map(({ node }) => (
                 <li>
-                  <a href={`https://acastro.hashnode.dev/${node.slug}`} target="_blank" rel="noopener noreferrer">
+                  <a href={`/post/${node.slug}/`}>
                     {node.title}
                   </a>
                 </li>

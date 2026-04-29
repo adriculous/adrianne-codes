@@ -9,6 +9,9 @@ All notable changes to this project will be documented here.
 ### Added
 - Added new **Learn** notes: *Why Your CSS Isn't Working: A Friendly Guide to Specificity*
 
+### Fixed
+- Fixed the headless path for `/learn/index.astro`, so that posts will be linked to its own page, not at the Hashnode page.
+
 ---
 
 ## 2026-04-22: Hashnode Integration & Content System Update
