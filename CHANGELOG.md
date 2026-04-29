@@ -7,16 +7,25 @@ All notable changes to this project will be documented here.
 ## 2026-04-28: New Learn Notes About CSS Specificity
 
 ### Added
+
 - Added new **Learn** notes: *Why Your CSS Isn't Working: A Friendly Guide to Specificity*
+- Shiki-powered syntax highlighting for code blocks
+- Custom code frame UI with language label and copy button
+- Styled blockquotes with lavender accent card design
 
 ### Fixed
+
 - Fixed the headless path for `/learn/index.astro`, so that posts will be linked to its own page, not at the Hashnode page.
+- Edited the latest post for spelling typos
+- Improved post layout styling for better readability
+- Enhanced code block contrast and typography
 
 ---
 
 ## 2026-04-22: Hashnode Integration & Content System Update
 
 ### Added
+
 - Hashnode headless CMS integration using GraphQL
 - `client.ts` and `schema.ts` for structured data fetching
 - Dynamic routing for posts via `/post/[slug].astro`
@@ -25,6 +34,7 @@ All notable changes to this project will be documented here.
 - Styled category sections with color-coded top borders
 
 ### Changed
+
 - Refactored `/tuts/index.astro` to support:
   - Latest Tutorials section (recent posts)
   - Category-based sections driven by tags
@@ -33,11 +43,13 @@ All notable changes to this project will be documented here.
 - Updated Adrianne Codes case study to reflect hybrid content system
 
 ### Fixed
+
 - Resolved TypeScript issues in Astro files (`any` type errors and missing imports)
 - Fixed Hashnode posts not appearing due to incorrect filtering logic
 - Corrected GraphQL data handling (`edges → node` structure)
 
 ### Notes
+
 - Adopted a hybrid content workflow:
   - Local Markdown for structured case studies and project pages
   - Hashnode CMS for content-heavy sections (Tuts and Learn)
@@ -48,6 +60,7 @@ All notable changes to this project will be documented here.
 ## 2026-04-16: Initial Build
 
 ### Added
+
 - Initial Astro project setup
 - Base layout (`Layout.astro`) and global styling
 - Navigation and footer components
@@ -57,14 +70,17 @@ All notable changes to this project will be documented here.
 - CHANGELOG.md
 
 ### Changed
+
 - Replaced default Astro README with custom project README
 - Refined layout structure (site shell, sidebar, content areas)
 - Updated Learn page to support categorized links
 
 ### Fixed
+
 - GitHub permission denied error when pushing (switched from HTTPS to SSH)
 
 ### Notes
+
 - Project is a rebuild of Adrianne Codes as a frontend + technical writing portfolio using Astro
 
 ---
@@ -72,6 +88,7 @@ All notable changes to this project will be documented here.
 ## 2026-04-16: Initial Build
 
 ### Added
+
 - Initial Astro project setup
 - Base layout (Layout.astro) and global styling
 - Navigation and footer components
@@ -81,12 +98,15 @@ All notable changes to this project will be documented here.
 - CHANGELOG.md
 
 ### Changed
+
 - Replaced default Astro README with custom project README
 - Refined layout structure (site shell, sidebar, content areas)
 - Updated Learn page to support categorized links
 
 ### Fixed
+
 - GitHub permission denied error when pushing (switched from HTTPS to SSH)
 
 ### Notes
+
 - Project is a rebuild of Adrianne Codes as a frontend + technical writing portfolio using Astro

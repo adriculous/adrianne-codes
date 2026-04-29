@@ -3,18 +3,91 @@ import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import { getAllPosts, getPost } from '../../lib/client';
+import { codeToHtml } from 'shiki';
+
+type PostEdge = {
+  node: {
+    slug: string;
+  };
+};
 
 export async function getStaticPaths() {
   const data = await getAllPosts();
-  const allPosts = data.publication.posts.edges;
+  const allPosts = data.publication.posts.edges as PostEdge[];
+
   return allPosts.map((post) => {
     return {
       params: { slug: post.node.slug },
-    }
-  })
+    };
+  });
 }
 const { slug } = Astro.params;
+
+if (!slug) {
+  throw new Error('Missing post slug');
+}
+
 const post = await getPost(slug);
+
+function decodeHtmlEntities(value: string) {
+  return value
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
+async function highlightCodeBlocks(html: string) {
+  const codeBlockRegex = /<pre(?:[^>]*)><code(?: class="language-([^"]+)")?[^>]*>([\s\S]*?)<\/code><\/pre>/g;
+  const matches = Array.from(html.matchAll(codeBlockRegex));
+
+  let highlightedHtml = html;
+
+  for (const match of matches) {
+    const originalBlock = match[0];
+    const lang = match[1] || 'text';
+    const code = decodeHtmlEntities(match[2]);
+
+    try {
+      const highlightedBlock = await codeToHtml(code, {
+        lang,
+        theme: 'catppuccin-mocha',
+      });
+
+      highlightedHtml = highlightedHtml.replace(
+        originalBlock,
+        `<div class="code-frame" data-code-frame>
+          <div class="code-frame__header">
+            <span class="code-frame__label">${lang}</span>
+            <button class="code-frame__copy" type="button">Copy</button>
+          </div>
+          ${highlightedBlock}
+        </div>`
+      );
+    } catch {
+      const highlightedBlock = await codeToHtml(code, {
+        lang: 'text',
+        theme: 'catppuccin-mocha',
+      });
+
+      highlightedHtml = highlightedHtml.replace(
+        originalBlock,
+        `<div class="code-frame" data-code-frame>
+          <div class="code-frame__header">
+            <span class="code-frame__label">text</span>
+            <button class="code-frame__copy" type="button">Copy</button>
+          </div>
+          ${highlightedBlock}
+        </div>`
+      );
+    }
+  }
+
+  return highlightedHtml;
+}
+
+const highlightedContent = await highlightCodeBlocks(post.content.html);
 ---
 
 <Layout title={`${post.title} | Adrianne Codes`}>
@@ -24,8 +97,7 @@ const post = await getPost(slug);
     </aside>
 
     <main class="site-main">
-      <section class="content-shell content-shell--white content-shell--reading">
-        
+      <section class="content-shell content-shell--reading">
         {post.coverImage?.url && (
           <img src={post.coverImage.url} alt={post.title} class="post-cover" />
         )}
@@ -36,16 +108,49 @@ const post = await getPost(slug);
           <span>{post.readTimeInMinutes} min read</span>
         </div>
 
-        <article class="post-content" set:html={post.content.html} />
-
+        <article class="post-content" set:html={highlightedContent} />
       </section>
     </main>
   </div>
 
   <Footer />
+  <script>
+    document.querySelectorAll<HTMLElement>('[data-code-frame]').forEach((frame) => {
+      const button = frame.querySelector('.code-frame__copy');
+      const code = frame.querySelector('code');
+
+      if (!(button instanceof HTMLButtonElement) || !code) return;
+
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(code.textContent ?? '');
+          button.textContent = 'Copied!';
+          button.classList.add('is-copied');
+
+          setTimeout(() => {
+            button.textContent = 'Copy';
+            button.classList.remove('is-copied');
+          }, 1600);
+        } catch {
+          button.textContent = 'Nope 😭';
+
+          setTimeout(() => {
+            button.textContent = 'Copy';
+          }, 1600);
+        }
+      });
+    });
+  </script>
 </Layout>
 
 <style>
+  :global(.content-shell--reading) {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
+    padding: 2rem;
+  }
+
   .post-cover {
     width: 100%;
     border-radius: 0.75rem;
@@ -60,6 +165,15 @@ const post = await getPost(slug);
 
   .post-content {
     line-height: 1.75;
+    background: transparent;
+    box-shadow: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .post-content :global(p:first-child) {
+    margin-top: 0;
   }
 
   .post-content :global(h2) {
@@ -69,5 +183,138 @@ const post = await getPost(slug);
   .post-content :global(img) {
     max-width: 100%;
     border-radius: 0.5rem;
+  }
+
+  /* Code blocks */
+  :global(.post-content .code-frame) {
+    margin: 1.5rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #1e1e2e;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  :global(.post-content .code-frame__header) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0.9rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  :global(.post-content .code-frame__label) {
+    color: #f5c2e7;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  :global(.post-content .code-frame__copy) {
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    cursor: pointer;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.35rem 0.7rem;
+    transition: background 150ms ease, transform 150ms ease;
+  }
+
+  :global(.post-content .code-frame__copy:hover) {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+  }
+
+  :global(.post-content .code-frame__copy.is-copied) {
+    background: #a6e3a1;
+    color: #1e1e2e;
+  }
+
+  .post-content :global(pre) {
+    background: #1e1e2e;
+    color: #ffffff;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .post-content :global(pre.shiki) {
+    background: #1e1e2e !important;
+  }
+
+  .post-content :global(pre.shiki code) {
+    display: block;
+    min-width: max-content;
+  }
+
+  .post-content :global(code) {
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* Simple syntax highlighting (basic) */
+  .post-content :global(pre code) {
+    color: #ffffff;
+  }
+
+  .post-content :global(.token.comment) {
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .post-content :global(.token.keyword) {
+    color: #c084fc; /* lavender */
+  }
+
+  .post-content :global(.token.string) {
+    color: #34d399; /* soft green */
+  }
+
+  .post-content :global(.token.tag) {
+    color: #60a5fa; /* blue */
+  }
+
+  .post-content :global(.token.attr-name) {
+    color: #fbbf24; /* gold */
+  }
+
+  .post-content :global(.token.attr-value) {
+    color: #f472b6; /* pink */
+  }
+
+  /* Inline code */
+  .post-content :global(p code) {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  /* Blockquotes */
+  .post-content :global(blockquote) {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border-left: 6px solid #c084fc; /* soft lavender accent */
+    background: rgba(192, 132, 252, 0.08);
+    border-radius: 0.75rem;
+    color: #4b5563;
+    font-style: italic;
+  }
+
+  .post-content :global(blockquote p) {
+    margin: 0;
+  }
+
+  .post-content :global(blockquote strong) {
+    color: #7c3aed;
   }
 </style>
